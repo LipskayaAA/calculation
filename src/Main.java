@@ -1,15 +1,23 @@
 import java.util.HashMap;
 import java.util.Scanner;
 
+// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
+// then press Enter. You can now see whitespace characters in your code.
 public class Main {
 
-    public static void main(String[] args) throws ScannerException {
-        System.out.println("Введите значения: ");
-        String[] s = Input();
+    public static String Input(){
+        System.out.println("Введите числа: ");
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        return input;
+    }
+
+    public static String calc (String input) throws MyException{
+        String[] s = input.split(" ");
         if (s.length < 3) {
-            throw new ScannerException("static void");
+            throw new MyException("static void");
         } else if (s.length > 3) {
-            throw new ScannerException("static void2");
+            throw new MyException("static void2");
         }
         HashMap<String, String> map = new HashMap<>();
         map.put("I", "1");
@@ -48,16 +56,16 @@ public class Main {
             }
         }
         if (count1 != count2){
-            throw new ScannerException("throws Exception //т.к. используются одновременно разные системы счисления");
+            throw new MyException("throws Exception //т.к. используются одновременно разные системы счисления");
         }
         int result;
         String sign = s[1];
         int firstNum = Integer.parseInt(firstNum1);
         int secondNum = Integer.parseInt(secondNum1);
         if (firstNum < 1 || firstNum > 10 || secondNum < 1 || secondNum >10){
-            throw new ScannerException("Числа должны быть в диапозоне 1..10");
+            throw new MyException("Числа должны быть в диапозоне 1..10");
         }
-        switch (sign) {
+        switch (sign){
             case "+":
                 if (count1 == 1 && count2 == 1) {
                     result = firstNum + secondNum;
@@ -70,8 +78,7 @@ public class Main {
                                 ostatok1 = itVar;
                             };
                         }
-                        System.out.println(ostatok1);
-                        break;
+                        return ostatok1;
                     }else {
                         String celoe1 = "X";
                         ostatok1 = " ";
@@ -84,22 +91,21 @@ public class Main {
                                 ostatok1 = itVar;
                             }
                         }
-                        System.out.println(celoe1+ostatok1);
-                        break;
+                        return celoe1 + ostatok1;
                     }
                 }else {
-                    System.out.println(firstNum + secondNum);
-                    break;
+                    result = firstNum + secondNum;
+                    return Integer.toString(result);
                 }
             case "-":
                 if (count1 == 1 && count2 == 1 && (firstNum - secondNum < 0)) {
-                    throw new ScannerException("throws Exception //т.к. в римской системе нет отрицательных чисел");
+                    throw new MyException("throws Exception //т.к. в римской системе нет отрицательных чисел");
                 }
                 if (count1 == 1 && count2 == 1){
                     result = firstNum - secondNum;
                     ostatok1 = " ";
                     if (result == 0){
-                        throw new ScannerException("нет нуля.");
+                        throw new MyException("нет нуля.");
                     }
                     for (String itVar : map.keySet()){
                         String value = map.get(itVar);
@@ -107,18 +113,17 @@ public class Main {
                             ostatok1 = itVar;
                         }
                     }
-                    System.out.println(ostatok1);
-                    break;
+                    return ostatok1;
                 }else {
-                    System.out.println(firstNum - secondNum);
-                    break;
+                    result = firstNum - secondNum;
+                    return Integer.toString(result);
                 }
             case "/":
                 if (count1 == 1 && count2 == 1){
                     ostatok1 = " ";
                     result = firstNum / secondNum;
                     if (result < 1){
-                        throw new ScannerException("result < 1");
+                        throw new MyException("result < 1");
                     }
                     for (String itVar : map.keySet()){
                         String value = map.get(itVar);
@@ -126,11 +131,10 @@ public class Main {
                             ostatok1 = itVar;
                         }
                     }
-                    System.out.println(ostatok1);
-                    break;
+                    return ostatok1;
                 }else {
-                    System.out.println(firstNum / secondNum);
-                    break;
+                    result = firstNum / secondNum;
+                    return Integer.toString(result);
                 }
             case "*":
                 if (count1 == 1 && count2 == 1){
@@ -145,8 +149,7 @@ public class Main {
                                 ostatok1 = itVar;
                             }
                         }
-                        System.out.println(ostatok1);
-                        break;
+                        return ostatok1;
                     }
                     if (ostatok == 0){
                         String celoe1 = " ";
@@ -156,8 +159,7 @@ public class Main {
                                 celoe1 = itVar;
                             }
                         }
-                        System.out.println(celoe1);
-                        break;
+                        return celoe1;
                     }
                     if (celoe !=0 && ostatok !=0){
                         ostatok1 = " ";
@@ -171,26 +173,26 @@ public class Main {
                                 celoe1 = itVar;
                             }
                         }
-                        System.out.println(celoe1 + ostatok1);
-                        break;
+                        return celoe1 + ostatok1;
                     }
                 }else {
-                    System.out.println(firstNum * secondNum);
-                    break;
+                    result = firstNum * secondNum;
+                    return Integer.toString(result);
                 }
         }
+        return null;
     }
 
-    public static String[] Input() {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        String[] parts = input.split(" ");
-        return parts;
+    public static void main(String[] args) throws MyException{
+        String s = Input();
+        String s1 = calc(s);
+        System.out.println(s1);
     }
 }
 
-class ScannerException extends Exception {
-    public ScannerException(String description){
+
+class MyException extends Exception {
+    public MyException(String description){
         super(description);
     }
 }
